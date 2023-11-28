@@ -1,0 +1,8 @@
+product: jvm/app
+dependencies:
+  - ../common
+settings: 
+  jvm:
+    mainClass: "cc.rbbl.MainKt"
+module:
+  layout: gradle-jvm
