@@ -4,5 +4,3 @@ dependencies:
 settings: 
   jvm:
     mainClass: "cc.rbbl.MainKt"
-module:
-  layout: gradle-jvm
