@@ -13,7 +13,7 @@ class Test {
 
     @Test
     fun part1Test() {
-        assertEquals(142, part1(input1))
+        assertEquals(142, day1part1(input1))
     }
 
     val input2 = """
@@ -28,7 +28,7 @@ class Test {
 
     @Test
     fun part2Test() {
-        assertEquals(281, part2(input2))
+        assertEquals(281, day1part2(input2))
     }
 
     @Test

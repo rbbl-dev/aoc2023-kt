@@ -2,18 +2,18 @@ package cc.rbbl
 
 suspend fun main() {
   val input = fetchPuzzleInput(1)
-  println(part1(input))
-  println(part2(input))
+  println(day1part1(input))
+  println(day1part2(input))
 }
 
-fun part1(input: String): Int {
+fun day1part1(input: String): Int {
   return input.trim().lines().sumOf { line ->
     val numbers = line.replace(Regex("\\D"), "")
     "${numbers.first()}${numbers.last()}".toInt()
   }
 }
 
-fun part2(input: String): Int {
+fun day1part2(input: String): Int {
   return input.trim().lines().sumOf { line ->
     val numbers = line.getFirstAnLastNumber()
     "${numbers.first}${numbers.second}".toInt()
