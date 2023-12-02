@@ -14,3 +14,4 @@ plugins {
 rootProject.name = "aoc2023"
 include(":common")
 include(":day1")
+include(":day2")

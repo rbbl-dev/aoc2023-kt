@@ -3,4 +3,4 @@ dependencies:
   - ../common
 settings: 
   jvm:
-    mainClass: "cc.rbbl.Main1Kt"
+    mainClass: "cc.rbbl.Main2Kt"
