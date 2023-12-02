@@ -1,0 +1,7 @@
+product: jvm/app
+dependencies:
+  - ../day1
+  - ../day2
+settings: 
+  jvm:
+    mainClass: "cc.rbbl.MainAIOKt"

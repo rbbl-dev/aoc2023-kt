@@ -1,9 +1,11 @@
 package cc.rbbl
 
-suspend fun main() {
+suspend fun main() = day2()
+
+suspend fun day2(){
     val input = parseInput(fetchPuzzleInput(2))
-    println(day2part1(input, 12, 13, 14))
-    println(day2part2(input))
+    println("day2 part1: ${day2part1(input, 12, 13, 14)}")
+    println("day2 part2: ${day2part2(input)}")
 }
 
 fun day2part1(input: List<GameResult>, red: Int, green: Int, blue: Int): Int {
