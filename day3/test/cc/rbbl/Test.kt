@@ -27,6 +27,11 @@ class Test {
 
     @Test
     fun part1Test(){
-        assertEquals(4361, day2part1(parseInput(input)))
+        assertEquals(4361, day3part1(parseInput(input)))
+    }
+
+    @Test
+    fun part2Test() {
+        assertEquals(467835, day3part2(parseInput(input)))
     }
 }

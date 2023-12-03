@@ -7,10 +7,11 @@ suspend fun main() = day3()
 
 suspend fun day3() {
     val input = parseInput(fetchPuzzleInput(3))
-    println("day3 part1: ${day2part1(input)}")
+    println("day3 part1: ${day3part1(input)}")
+    println("day3 part2: ${day3part2(input)}")
 }
 
-fun day2part1(input: List<List<Char>>): Int {
+fun day3part1(input: List<List<Char>>): Int {
     var currentNumber = 0
     var sum = 0
     for (y in 0..input.height()) {
@@ -29,6 +30,34 @@ fun day2part1(input: List<List<Char>>): Int {
             }
         }
     }
+    return sum
+}
+
+fun day3part2(input: List<List<Char>>): Int {
+    var sum = 0
+    input.forEachIndexed { x, charList ->
+        charList.forEachIndexed { y, char ->
+            if(char == '*') {
+                val surroundingNumbers = mutableListOf<Int>()
+                var currentNumber: Int? = null
+                input.iterateNeighbors(x, y){charN, xN, yN ->
+                    if(charN.isDigit()) {
+                        val contiguousNumber = input.getContiguousNumber(xN, yN)
+                        if(contiguousNumber != currentNumber) {
+                            currentNumber = contiguousNumber
+                            surroundingNumbers.add(contiguousNumber!!)
+                        }
+                    }else {
+                        currentNumber = null
+                    }
+                }
+                if(surroundingNumbers.size == 2) {
+                    sum += surroundingNumbers[0] * surroundingNumbers[1]
+                }
+            }
+        }
+    }
+
     return sum
 }
 
@@ -57,9 +86,17 @@ fun List<List<Char>>.getContiguousNumber(centerX:Int, centerY:Int): Int?{
     return charArray.joinToString("","","").toInt()
 }
 
+fun List<List<Char>>.iterateNeighbors(centerX: Int, centerY: Int, apply: (char: Char, x: Int, y: Int) -> Unit ) {
+    for (y in max(centerY - 1, 0)..min(centerY + 1, this.height())) {
+        for (x in max(centerX - 1, 0)..min(centerX + 1, this.width())) {
+            apply(this[x][y], x, y)
+        }
+    }
+}
+
 fun List<List<Char>>.checkNeighbors(centerX: Int, centerY: Int, matchFunction: (char: Char) -> Boolean): Boolean {
-    for (x in max(centerX - 1, 0)..min(centerX + 1, this.width())) {
-        for (y in max(centerY - 1, 0)..min(centerY + 1, this.height())) {
+    for (y in max(centerY - 1, 0)..min(centerY + 1, this.height())) {
+        for (x in max(centerX - 1, 0)..min(centerX + 1, this.width())) {
             if (x == centerX && y == centerY) {
                 continue
             }
