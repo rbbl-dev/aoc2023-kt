@@ -5,6 +5,7 @@ suspend fun main() = day4()
 suspend fun day4() {
     val input = parseInput(fetchPuzzleInput(4))
     println("day4 part1: ${day4part1(input)}")
+    println("day4 part2: ${day4part2(input)}")
 }
 
 fun day4part1(input: List<Card>): Int {
@@ -25,6 +26,25 @@ fun day4part1(input: List<Card>): Int {
         }
         result
     }
+}
+
+fun day4part2(input: List<Card>): Int {
+    val additionalCards = mutableListOf<Card>()
+    input.forEachIndexed {index, card ->
+        var hits = 0
+        card.winningNumbers.forEach { winningNumber ->
+            if(card.gambleNumbers.contains(winningNumber)) {
+                hits += 1
+            }
+        }
+        val additionalCardCount = additionalCards.count { it.id == card.id }
+        for(i in 1..hits) {
+            for(l in 0..additionalCardCount) {
+                additionalCards.add(input[index+i])
+            }
+        }
+    }
+    return input.count() + additionalCards.count()
 }
 
 fun parseInput(input: String): List<Card> {

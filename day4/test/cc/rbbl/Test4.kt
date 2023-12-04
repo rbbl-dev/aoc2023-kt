@@ -28,4 +28,9 @@ class Test4 {
     fun part1Test(){
         assertEquals(13, day4part1(parseInput(input)))
     }
+
+    @Test
+    fun part2Test(){
+        assertEquals(30, day4part2(parseInput(input)))
+    }
 }
