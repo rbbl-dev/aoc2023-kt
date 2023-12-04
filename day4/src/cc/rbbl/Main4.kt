@@ -39,7 +39,7 @@ fun day4part1(input: List<Card>): Int {
 }
 
 fun day4part2(input: List<Card>): Int {
-    val additionalCards = mutableListOf<Card>()
+    val additionalCards = mutableMapOf<Int, Int>()
     input.forEachIndexed {index, card ->
         var hits = 0
         card.winningNumbers.forEach { winningNumber ->
@@ -47,14 +47,12 @@ fun day4part2(input: List<Card>): Int {
                 hits += 1
             }
         }
-        val additionalCardCount = additionalCards.count { it.id == card.id }
+        val currentCardCount = (additionalCards[card.id] ?: 0) + 1
         for(i in 1..hits) {
-            for(l in 0..additionalCardCount) {
-                additionalCards.add(input[index+i])
-            }
+            additionalCards[card.id+i] = (additionalCards[card.id+i]?:0) + currentCardCount
         }
     }
-    return input.count() + additionalCards.count()
+    return input.count() + additionalCards.values.sum()
 }
 
 fun parseInput(input: String): List<Card> {
