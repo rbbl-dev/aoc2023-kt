@@ -2,13 +2,22 @@ package cc.rbbl
 
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.system.measureTimeMillis
 
 suspend fun main() = day3()
 
 suspend fun day3() {
     val input = parseInput(fetchPuzzleInput(3))
-    println("day3 part1: ${day3part1(input)}")
-    println("day3 part2: ${day3part2(input)}")
+    val part1: Int
+    val part1TimeMs = measureTimeMillis {
+        part1 = day3part1(input)
+    }
+    println("day3 part1: $part1 | solved in $part1TimeMs ms")
+    val part2: Int
+    val part2TimeMs = measureTimeMillis {
+        part2 = day3part2(input)
+    }
+    println("day3 part2: $part2 | solved in $part2TimeMs ms")
 }
 
 fun day3part1(input: List<List<Char>>): Int {

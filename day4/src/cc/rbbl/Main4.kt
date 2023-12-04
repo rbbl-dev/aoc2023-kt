@@ -1,11 +1,21 @@
 package cc.rbbl
 
+import kotlin.system.measureTimeMillis
+
 suspend fun main() = day4()
 
 suspend fun day4() {
     val input = parseInput(fetchPuzzleInput(4))
-    println("day4 part1: ${day4part1(input)}")
-    println("day4 part2: ${day4part2(input)}")
+    val part1: Int
+    val part1TimeMs = measureTimeMillis {
+        part1 = day4part1(input)
+    }
+    println("day4 part1: $part1 | solved in $part1TimeMs ms")
+    val part2: Int
+    val part2TimeMs = measureTimeMillis {
+        part2 = day4part2(input)
+    }
+    println("day4 part2: $part2 | solved in $part2TimeMs ms")
 }
 
 fun day4part1(input: List<Card>): Int {
