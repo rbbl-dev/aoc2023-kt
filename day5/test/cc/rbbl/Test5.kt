@@ -57,4 +57,20 @@ class Test5 {
     fun part1Test(){
         assertEquals(35, day5part1(parseInput(input)))
     }
+
+    @Test
+    fun part2Test(){
+        assertEquals(46, day5part2(parseInput(input)))
+    }
+
+    @Test
+    fun part2Test2(){
+        assertEquals(46, day5part2(Instructions(listOf(82L,1L), parseInput(input).maps)))
+    }
+
+    @Test
+    fun sourceRange(){
+        assertEquals(98, RangeIndicator(98,50,2).sourceRange.first)
+        assertEquals(99, RangeIndicator(98,50,2).sourceRange.last)
+    }
 }

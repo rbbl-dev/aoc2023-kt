@@ -11,27 +11,54 @@ suspend fun day5() {
         part1 = day5part1(input)
     }
     println("day5 part1: $part1 | solved in $part1TimeMs ms")
+    val part2: Long
+    val part2TimeMs = measureTimeMillis {
+        part2 = day5part2(input)
+    }
+    println("day5 part2: $part2 | solved in $part2TimeMs ms")
 }
 
 fun day5part1(input: Instructions): Long {
     var currentNumbers = input.seeds
-    input.maps.forEach {map ->
+    input.maps.forEach { map ->
         val newNumbers = mutableListOf<Long>()
         currentNumbers.forEach {
             var hasMatch = false
             map.forEach { rangeIndicator ->
-                if(it in rangeIndicator.source..rangeIndicator.source+rangeIndicator.amount) {
-                    newNumbers.add(rangeIndicator.target+(it-rangeIndicator.source))
+                if (it in rangeIndicator.source..rangeIndicator.source + rangeIndicator.amount) {
+                    newNumbers.add(rangeIndicator.target + (it - rangeIndicator.source))
                     hasMatch = true
                 }
             }
-            if(!hasMatch) {
+            if (!hasMatch) {
                 newNumbers.add(it)
             }
         }
         currentNumbers = newNumbers
     }
     return currentNumbers.min()
+}
+
+fun day5part2(input: Instructions): Long {
+    var currentRanges = input.seeds.chunked(2).map { it[0]..<it[0] + it[1] }
+    input.maps.forEach { map ->
+        val newLeftovers = mutableListOf<LongRange>()
+        val newRanges = mutableListOf<LongRange>()
+        currentRanges.forEach { range ->
+            val potentialLeftovers = mutableListOf<LongRange>()
+            map.forEach { rangeIndicator ->
+                val result = range.map(rangeIndicator)
+                result.migrated?.let {
+                    newRanges.add(it)
+                    potentialLeftovers.remove(range)
+                }
+                potentialLeftovers.addAll(result.leftovers)
+            }
+            newLeftovers.addAll(potentialLeftovers)
+        }
+        currentRanges = newRanges+newLeftovers
+    }
+    return currentRanges.map { it.first }.min()
 }
 
 fun parseInput(input: String): Instructions {
@@ -51,12 +78,53 @@ fun parseInput(input: String): Instructions {
     return Instructions(parsedSeedData, rangeIndicators)
 }
 
+fun LongRange.map(rangeIndicator: RangeIndicator): MappingResult {
+    return if (this.first < rangeIndicator.sourceRange.first && this.last > rangeIndicator.sourceRange.last) {
+        MappingResult(
+            rangeIndicator.targetRange,
+            listOf(this.first..<rangeIndicator.sourceRange.last, rangeIndicator.sourceRange.last + 1..this.last)
+        )
+    } else if (this.first < rangeIndicator.sourceRange.first && this.last < rangeIndicator.sourceRange.first) {
+        MappingResult(null, this)
+    } else if (this.first < rangeIndicator.sourceRange.first && this.last <= rangeIndicator.sourceRange.last) {
+        MappingResult(
+            rangeIndicator.targetRange.first..rangeIndicator.targetRange.last - (rangeIndicator.sourceRange.last - this.last),
+            listOf(this.first..<rangeIndicator.sourceRange.first)
+        )
+    } else if (this.first >= rangeIndicator.sourceRange.first && this.last <= rangeIndicator.sourceRange.last) {
+        MappingResult(
+            rangeIndicator.targetRange.first + (this.first - rangeIndicator.sourceRange.first)..rangeIndicator.targetRange.last - (rangeIndicator.sourceRange.last - this.last),
+            listOf()
+        )
+    } else if (this.first > rangeIndicator.sourceRange.last && this.last > rangeIndicator.sourceRange.last) {
+        MappingResult(null, this)
+    } else if (this.first >= rangeIndicator.sourceRange.first && this.last > rangeIndicator.sourceRange.last) {
+        MappingResult(
+            rangeIndicator.targetRange.first + (this.first - rangeIndicator.sourceRange.first)..rangeIndicator.targetRange.last,
+            rangeIndicator.sourceRange.last + 1..this.last
+        )
+    } else {
+        throw IllegalArgumentException()
+    }
+}
+
+data class MappingResult(
+    val migrated: LongRange?,
+    val leftovers: List<LongRange>
+) {
+    constructor(migrated: LongRange?, leftover: LongRange) : this(migrated, listOf(leftover))
+}
+
 data class Instructions(
     val seeds: List<Long>,
     val maps: List<List<RangeIndicator>>
 )
-data class RangeIndicator (
+
+data class RangeIndicator(
     val source: Long,
     val target: Long,
     val amount: Long
-)
+) {
+    val sourceRange = source..<source + amount
+    val targetRange = target..<target + amount
+}
