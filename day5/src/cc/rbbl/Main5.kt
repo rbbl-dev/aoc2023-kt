@@ -40,23 +40,27 @@ fun day5part1(input: Instructions): Long {
 }
 
 fun day5part2(input: Instructions): Long {
-    var currentRanges = input.seeds.chunked(2).map { it[0]..<it[0] + it[1] }
-    input.maps.forEach { map ->
-        val newLeftovers = mutableListOf<LongRange>()
-        val newRanges = mutableListOf<LongRange>()
-        currentRanges.forEach { range ->
-            val potentialLeftovers = mutableListOf<LongRange>()
+    var currentRanges = input.seeds.chunked(2).map { it[0]..<it[0] + it[1] }.toSet()
+    for(map in input.maps){
+        val newLeftovers = mutableSetOf<LongRange>()
+        val newRanges = mutableSetOf<LongRange>()
+        println(currentRanges)
+        for( range in currentRanges) {
+            var innerLeftovers = setOf<LongRange>(range)
             map.forEach { rangeIndicator ->
-                val result = range.map(rangeIndicator)
-                result.migrated?.let {
-                    newRanges.add(it)
-                    potentialLeftovers.remove(range)
+                val potentialLeftovers = mutableSetOf<LongRange>()
+                innerLeftovers.forEach { leftover ->
+                    val result = leftover.map(rangeIndicator)
+                    result.migrated?.let {
+                        newRanges.add(it)
+                    }
+                    potentialLeftovers.addAll(result.leftovers)
                 }
-                potentialLeftovers.addAll(result.leftovers)
+                innerLeftovers =potentialLeftovers
             }
-            newLeftovers.addAll(potentialLeftovers)
+            newLeftovers.addAll(innerLeftovers)
         }
-        currentRanges = newRanges+newLeftovers
+        currentRanges = (newRanges+newLeftovers)
     }
     return currentRanges.map { it.first }.min()
 }
