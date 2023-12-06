@@ -44,7 +44,6 @@ fun day5part2(input: Instructions): Long {
     for(map in input.maps){
         val newLeftovers = mutableSetOf<LongRange>()
         val newRanges = mutableSetOf<LongRange>()
-        println(currentRanges)
         for( range in currentRanges) {
             var innerLeftovers = setOf<LongRange>(range)
             map.forEach { rangeIndicator ->

@@ -8,4 +8,6 @@ suspend fun main(){
     day3()
     println()
     day4()
+    println()
+    day5()
 }
