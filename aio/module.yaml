@@ -5,6 +5,7 @@ dependencies:
   - ../day3
   - ../day4
   - ../day5
+  - ../day6
 settings: 
   jvm:
     mainClass: "cc.rbbl.MainAIOKt"
