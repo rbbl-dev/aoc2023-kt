@@ -15,7 +15,7 @@ suspend fun day6() {
     val part2TimeMs = measureTimeMillis {
         part2 = day6calulation(parseForPart2(input))
     }
-    println("day6 part1: $part2 | solved in $part2TimeMs ms")
+    println("day6 part2: $part2 | solved in $part2TimeMs ms")
 }
 
 fun day6calulation(input: List<List<Long>>): Long {
